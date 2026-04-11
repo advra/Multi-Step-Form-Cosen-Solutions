@@ -73,7 +73,7 @@ export const OnboardingNameForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
-        <FieldGroup>
+        <FieldGroup className="max-w-md">
           <Controller
             name="firstName"
             control={form.control}

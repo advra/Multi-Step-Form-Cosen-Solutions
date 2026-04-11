@@ -38,8 +38,10 @@ export const OnboardingUsernameForm = () => {
     },
   });
 
-  const onPrevious = (data: OnboardingUsernameNameSchema) => {
-    setData(data);
+  // navigat to a page skipping current validation
+  const onPrevious = () => {
+    const formValues = form.getValues();
+    setData(formValues);
     router.push("/onboarding/password");
   };
 
@@ -106,7 +108,7 @@ export const OnboardingUsernameForm = () => {
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
-        <FieldGroup>
+        <FieldGroup className="max-w-md">
           <Controller
             name="username"
             control={form.control}
@@ -126,7 +128,7 @@ export const OnboardingUsernameForm = () => {
             )}
           />
         </FieldGroup>
-        <FieldGroup className="max-w-sm">
+        <FieldGroup className="max-w-md">
           <Controller
             name="terms"
             control={form.control}
@@ -156,11 +158,7 @@ export const OnboardingUsernameForm = () => {
           />
         </FieldGroup>
         <Field orientation="horizontal" className="gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={form.handleSubmit(onPrevious)}
-          >
+          <Button type="button" variant="outline" onClick={onPrevious}>
             Previous
           </Button>
           <Button type="submit" form="form-rhf-onboarding">

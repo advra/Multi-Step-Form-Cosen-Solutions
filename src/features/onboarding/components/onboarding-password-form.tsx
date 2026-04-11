@@ -40,8 +40,9 @@ export const OnboardingPasswordForm = () => {
     },
   });
 
-  const onPrevious = (data: OnboardingPasswordSchema) => {
-    setData(data);
+  const onPrevious = () => {
+    const formValues = form.getValues();
+    setData(formValues);
     router.push("/onboarding/name");
   };
 
@@ -145,11 +146,7 @@ export const OnboardingPasswordForm = () => {
           />
         </FieldGroup>
         <Field orientation="horizontal" className="gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={form.handleSubmit(onPrevious)}
-          >
+          <Button type="button" variant="outline" onClick={onPrevious}>
             Previous
           </Button>
           <Button type="submit" form="form-rhf-onboarding">
