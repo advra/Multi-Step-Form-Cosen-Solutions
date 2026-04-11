@@ -40,19 +40,47 @@ export const OnboardingPasswordForm = () => {
     },
   });
 
+  const onPrevious = (data: OnboardingPasswordSchema) => {
+    setData(data);
+    router.push("/onboarding/name");
+  };
+
   const onSubmit = (data: OnboardingPasswordSchema) => {
     setData(data);
     router.push("/onboarding/username");
   };
 
+  // Check for redirect when store hydrates (if name data is missing)
+  useEffect(() => {
+    const checkAndRedirect = () => {
+      const state = useOnboardingStore.getState();
+      if (!state.firstName || !state.lastName) {
+        router.push("/onboarding/name");
+      }
+    };
+
+    // Check if already hydrated
+    if (useOnboardingStore.persist?.hasHydrated()) {
+      checkAndRedirect();
+    }
+
+    // Listen for future hydration
+    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
+      checkAndRedirect();
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  // Pre-fill form when store hydrates from localStorage
   useEffect(() => {
     const handleHydration = () => {
       const state = useOnboardingStore.getState();
       // Only pre-fill if we have data
       if (state.password || state.repeatPassword) {
         form.reset({
-          password: state.password,
-          repeatPassword: state.repeatPassword,
+          password: state.password || "",
+          repeatPassword: state.repeatPassword || "",
         });
       }
     };
@@ -116,7 +144,14 @@ export const OnboardingPasswordForm = () => {
             )}
           />
         </FieldGroup>
-        <Field orientation="horizontal">
+        <Field orientation="horizontal" className="gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={form.handleSubmit(onPrevious)}
+          >
+            Previous
+          </Button>
           <Button type="submit" form="form-rhf-onboarding">
             Next
           </Button>

@@ -28,6 +28,7 @@ type OnboardingUsernameNameSchema = z.infer<typeof onboardingUsernameSchema>;
 
 export const OnboardingUsernameForm = () => {
   const router = useRouter();
+  const setData = useOnboardingStore((state) => state.setData);
   const firstName = useOnboardingStore((state) => state.firstName);
   const lastName = useOnboardingStore((state) => state.lastName);
   const password = useOnboardingStore((state) => state.password);
@@ -41,25 +42,49 @@ export const OnboardingUsernameForm = () => {
     },
   });
 
+  const onPrevious = (data: OnboardingUsernameNameSchema) => {
+    setData(data);
+    router.push("/onboarding/password");
+  };
+
   const onSubmit = (data: OnboardingUsernameNameSchema) => {
-    console.log({
-      ...data,
-      firstName,
-      lastName,
-      password,
-      repeatPassword,
-    });
+    setData(data);
     router.push("/");
   };
 
+  // Check for redirect when store hydrates (if name or password data is missing)
+  useEffect(() => {
+    const checkAndRedirect = () => {
+      const state = useOnboardingStore.getState();
+      if (!state.firstName || !state.lastName) {
+        router.push("/onboarding/name");
+      } else if (!state.password || !state.repeatPassword) {
+        router.push("/onboarding/password");
+      }
+    };
+
+    // Check if already hydrated
+    if (useOnboardingStore.persist?.hasHydrated()) {
+      checkAndRedirect();
+    }
+
+    // Listen for future hydration
+    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
+      checkAndRedirect();
+    });
+
+    return () => unsubscribe();
+  }, [router]);
+
+  // Pre-fill form when store hydrates from localStorage
   useEffect(() => {
     const handleHydration = () => {
       const state = useOnboardingStore.getState();
       // Only pre-fill if we have data
-      if (state.password || state.repeatPassword) {
+      if (state.username || state.terms !== undefined) {
         form.reset({
-          username: state.username,
-          terms: state.terms,
+          username: state.username || "",
+          terms: state.terms || false,
         });
       }
     };
@@ -134,7 +159,14 @@ export const OnboardingUsernameForm = () => {
             )}
           />
         </FieldGroup>
-        <Field orientation="horizontal">
+        <Field orientation="horizontal" className="gap-4">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={form.handleSubmit(onPrevious)}
+          >
+            Previous
+          </Button>
           <Button type="submit" form="form-rhf-onboarding">
             Submit
           </Button>
