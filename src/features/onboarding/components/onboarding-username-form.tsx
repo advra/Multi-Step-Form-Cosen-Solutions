@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useOnboardingStore } from "@/app/onboarding/store";
 
 const onboardingUsernameSchema = onboardingBaseSchema.pick({
   username: true,
@@ -26,6 +27,10 @@ type OnboardingUsernameNameSchema = z.infer<typeof onboardingUsernameSchema>;
 
 export const OnboardingUsernameForm = () => {
   const router = useRouter();
+  const firstName = useOnboardingStore((state) => state.firstName);
+  const lastName = useOnboardingStore((state) => state.lastName);
+  const password = useOnboardingStore((state) => state.password);
+  const repeatPassword = useOnboardingStore((state) => state.repeatPassword);
 
   const form = useForm<OnboardingUsernameNameSchema>({
     resolver: zodResolver(onboardingUsernameSchema),
@@ -36,7 +41,13 @@ export const OnboardingUsernameForm = () => {
   });
 
   const onSubmit = (data: OnboardingUsernameNameSchema) => {
-    console.log(data);
+    console.log({
+      ...data,
+      firstName,
+      lastName,
+      password,
+      repeatPassword,
+    });
     router.push("/");
   };
 

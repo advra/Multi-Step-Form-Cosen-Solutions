@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import InputPassword from "@/components/ui/custom/input-password";
+import { useOnboardingStore } from "@/app/onboarding/store";
 
 const onboardingPasswordSchema = onboardingBaseSchema
   .pick({
@@ -28,7 +29,7 @@ type OnboardingPasswordSchema = z.infer<typeof onboardingPasswordSchema>;
 
 export const OnboardingPasswordForm = () => {
   const router = useRouter();
-
+  const setData = useOnboardingStore((state) => state.setData);
   const form = useForm<OnboardingPasswordSchema>({
     resolver: zodResolver(onboardingPasswordSchema),
     defaultValues: {
@@ -38,8 +39,8 @@ export const OnboardingPasswordForm = () => {
   });
 
   const onSubmit = (data: OnboardingPasswordSchema) => {
+    setData(data);
     router.push("/onboarding/username");
-    console.log(data);
   };
 
   return (

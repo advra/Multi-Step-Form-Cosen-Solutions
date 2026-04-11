@@ -15,3 +15,5 @@ pnpm dev
 # or
 bun dev
 ```
+
+Navigate to: http://localhost:3000/onboarding/name
