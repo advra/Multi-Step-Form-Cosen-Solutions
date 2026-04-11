@@ -53,22 +53,29 @@ export const OnboardingUsernameForm = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = useOnboardingStore.subscribe((state) => {
-      // Check if we have the values we need
-      if (
-        state.firstName &&
-        state.lastName &&
-        state.password &&
-        state.repeatPassword
-      ) {
-        // Values are now available
-      } else {
-        router.push("/onboarding/");
+    const handleHydration = () => {
+      const state = useOnboardingStore.getState();
+      // Only pre-fill if we have data
+      if (state.password || state.repeatPassword) {
+        form.reset({
+          username: state.username,
+          terms: state.terms,
+        });
       }
+    };
+
+    // Check if already hydrated
+    if (useOnboardingStore.persist?.hasHydrated()) {
+      handleHydration();
+    }
+
+    // Listen for future hydration
+    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
+      handleHydration();
     });
 
     return () => unsubscribe();
-  }, [router]);
+  }, [form]);
 
   return (
     <div>

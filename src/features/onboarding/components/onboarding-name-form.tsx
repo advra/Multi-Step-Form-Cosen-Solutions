@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useOnboardingStore } from "@/app/onboarding/store";
+import { useEffect } from "react";
 
 const onboardingNameSchema = onboardingBaseSchema.pick({
   firstName: true,
@@ -38,6 +39,31 @@ export const OnboardingNameForm = () => {
     setData(data);
     router.push("/onboarding/password");
   };
+
+  useEffect(() => {
+    const handleHydration = () => {
+      const state = useOnboardingStore.getState();
+      // Only pre-fill if we have data
+      if (state.firstName || state.lastName) {
+        form.reset({
+          firstName: state.firstName,
+          lastName: state.lastName,
+        });
+      }
+    };
+
+    // Check if already hydrated
+    if (useOnboardingStore.persist?.hasHydrated()) {
+      handleHydration();
+    }
+
+    // Listen for future hydration
+    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
+      handleHydration();
+    });
+
+    return () => unsubscribe();
+  }, [form]);
 
   return (
     <div>
