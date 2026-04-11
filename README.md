@@ -4,6 +4,8 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 Multistep from based off of [Cosden Solutions Youtube Video](https://www.youtube.com/watch?v=vKJe95pqn8E)
 
+This uses zod for the schema, react hook form coupled with zustand for localstorage and persistance.
+
 First, run the development server:
 
 ```bash
