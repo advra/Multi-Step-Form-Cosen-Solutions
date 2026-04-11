@@ -17,7 +17,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useOnboardingStore } from "@/app/onboarding/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const onboardingUsernameSchema = onboardingBaseSchema.pick({
   username: true,
@@ -28,7 +28,6 @@ type OnboardingUsernameNameSchema = z.infer<typeof onboardingUsernameSchema>;
 
 export const OnboardingUsernameForm = () => {
   const router = useRouter();
-  const [hasHydrated, setHasHydrated] = useState(false);
   const firstName = useOnboardingStore((state) => state.firstName);
   const lastName = useOnboardingStore((state) => state.lastName);
   const password = useOnboardingStore((state) => state.password);
@@ -54,19 +53,22 @@ export const OnboardingUsernameForm = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = useOnboardingStore.persist.onFinishHydration(() => {
-      setHasHydrated(true);
+    const unsubscribe = useOnboardingStore.subscribe((state) => {
+      // Check if we have the values we need
+      if (
+        state.firstName &&
+        state.lastName &&
+        state.password &&
+        state.repeatPassword
+      ) {
+        // Values are now available
+      } else {
+        router.push("/onboarding/");
+      }
     });
 
     return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!hasHydrated) return;
-    if (!firstName || !lastName || !password || !repeatPassword) {
-      router.push("/onboarding/name");
-    }
-  }, [hasHydrated, firstName, lastName, router, password, repeatPassword]);
+  }, [router]);
 
   return (
     <div>
