@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import InputPassword from "@/components/ui/custom/input-password";
 import { useOnboardingStore } from "@/app/onboarding/store";
+import { useEffect } from "react";
 
 const onboardingPasswordSchema = onboardingBaseSchema
   .pick({
@@ -29,7 +30,11 @@ type OnboardingPasswordSchema = z.infer<typeof onboardingPasswordSchema>;
 
 export const OnboardingPasswordForm = () => {
   const router = useRouter();
+  const firstName = useOnboardingStore((state) => state.firstName);
+  const lastName = useOnboardingStore((state) => state.lastName);
+
   const setData = useOnboardingStore((state) => state.setData);
+
   const form = useForm<OnboardingPasswordSchema>({
     resolver: zodResolver(onboardingPasswordSchema),
     defaultValues: {
@@ -42,6 +47,14 @@ export const OnboardingPasswordForm = () => {
     setData(data);
     router.push("/onboarding/username");
   };
+
+  useEffect(() => {
+    if (!useOnboardingStore.persist.hasHydrated) return;
+
+    if (!firstName || !lastName) {
+      router.push("/onboarding/name");
+    }
+  }, [useOnboardingStore.persist.hasHydrated, firstName, lastName, router]);
 
   return (
     <div>
