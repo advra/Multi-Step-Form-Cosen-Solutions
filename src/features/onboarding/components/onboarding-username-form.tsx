@@ -29,10 +29,6 @@ type OnboardingUsernameNameSchema = z.infer<typeof onboardingUsernameSchema>;
 export const OnboardingUsernameForm = () => {
   const router = useRouter();
   const setData = useOnboardingStore((state) => state.setData);
-  const firstName = useOnboardingStore((state) => state.firstName);
-  const lastName = useOnboardingStore((state) => state.lastName);
-  const password = useOnboardingStore((state) => state.password);
-  const repeatPassword = useOnboardingStore((state) => state.repeatPassword);
 
   const form = useForm<OnboardingUsernameNameSchema>({
     resolver: zodResolver(onboardingUsernameSchema),
