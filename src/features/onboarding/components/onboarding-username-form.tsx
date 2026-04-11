@@ -16,7 +16,6 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 
 const onboardingUsernameSchema = onboardingBaseSchema.pick({
   username: true,
@@ -26,6 +25,8 @@ const onboardingUsernameSchema = onboardingBaseSchema.pick({
 type OnboardingUsernameNameSchema = z.infer<typeof onboardingUsernameSchema>;
 
 export const OnboardingUsernameForm = () => {
+  const router = useRouter();
+
   const form = useForm<OnboardingUsernameNameSchema>({
     resolver: zodResolver(onboardingUsernameSchema),
     defaultValues: {
@@ -36,6 +37,7 @@ export const OnboardingUsernameForm = () => {
 
   const onSubmit = (data: OnboardingUsernameNameSchema) => {
     console.log(data);
+    router.push("/");
   };
 
   return (
@@ -52,10 +54,10 @@ export const OnboardingUsernameForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="form-rhf-first-name">Username</FieldLabel>
+                <FieldLabel htmlFor="form-rhf-username">Username</FieldLabel>
                 <Input
                   {...field}
-                  id="form-rhf-first-name"
+                  id="form-rhf-username"
                   aria-invalid={fieldState.invalid}
                   autoComplete="off"
                 />
@@ -72,16 +74,25 @@ export const OnboardingUsernameForm = () => {
             control={form.control}
             render={({ field, fieldState }) => (
               <Field orientation="horizontal">
-                <Checkbox id="terms-checkbox" name="terms-checkbox" />
+                <Checkbox
+                  id={field.name}
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                  name={field.name}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
                 <FieldContent>
-                  <FieldLabel htmlFor="terms-checkbox">
+                  <FieldLabel htmlFor={field.name}>
                     Accept terms and conditions
                   </FieldLabel>
                   <FieldDescription>
                     By clicking this checkbox, you agree to the terms.
                   </FieldDescription>
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
                 </FieldContent>
-                {!field.value && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />

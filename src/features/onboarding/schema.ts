@@ -7,7 +7,9 @@ export const onboardingBaseSchema = z.object({
   lastName: z.string().min(2).max(20),
   password: z.string().min(8).max(20),
   repeatPassword: z.string().min(8).max(20),
-  terms: z.boolean().refine((data)=>data)
+  terms: z.boolean().refine((data)=>data, {
+    message: "You must accept the terms and conditions"
+  })
 });
 
 // Full schema with password matching validation
