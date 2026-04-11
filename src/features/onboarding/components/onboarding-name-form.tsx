@@ -66,14 +66,14 @@ export const OnboardingNameForm = () => {
   }, [form]);
 
   return (
-    <div>
+    <>
       <span className="text-lg font-semibold">Personal Information</span>
       <form
         id="form-rhf-onboarding"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
-        <FieldGroup className="max-w-md">
+        <FieldGroup>
           <Controller
             name="firstName"
             control={form.control}
@@ -116,11 +116,11 @@ export const OnboardingNameForm = () => {
           />
         </FieldGroup>
         <Field orientation="horizontal">
-          <Button type="submit" form="form-rhf-onboarding">
+          <Button type="submit" form="form-rhf-onboarding" className="ml-auto">
             Next
           </Button>
         </Field>
       </form>
-    </div>
+    </>
   );
 };

@@ -2,7 +2,7 @@ import { OnboardingPasswordForm } from "@/features/onboarding/components/onboard
 
 export const OnboardingNamePage = () => {
   return (
-    <div className="mx-auto min-w-3xl">
+    <div className="mt-8 mx-auto min-w-3xl">
       <OnboardingPasswordForm />
     </div>
   );

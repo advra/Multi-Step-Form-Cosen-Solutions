@@ -2,7 +2,7 @@ import { OnboardingNameForm } from "@/features/onboarding/components/onboarding-
 
 export const OnboardingNamePage = () => {
   return (
-    <div className="mx-auto min-w-3xl">
+    <div className="mt-8 mx-auto min-w-3xl">
       <OnboardingNameForm />
     </div>
   );

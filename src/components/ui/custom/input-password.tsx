@@ -8,11 +8,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-const InputPassword = ({ className, ...props }: React.ComponentProps<"input">) => {
+const InputPassword = ({
+  className,
+  ...props
+}: React.ComponentProps<"input">) => {
   const [isVisible, setIsVisible] = useState(false);
 
   return (
-    <div className={cn("w-full max-w-xs space-y-2", className)}>
+    <div className={cn("w-full space-y-2", className)}>
       <div className="relative">
         <Input
           {...props}

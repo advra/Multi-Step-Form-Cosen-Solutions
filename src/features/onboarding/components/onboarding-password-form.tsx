@@ -100,7 +100,7 @@ export const OnboardingPasswordForm = () => {
   }, [form]);
 
   return (
-    <div>
+    <>
       <span className="text-lg font-semibold">Password Details</span>
       <form
         id="form-rhf-onboarding"
@@ -146,7 +146,12 @@ export const OnboardingPasswordForm = () => {
           />
         </FieldGroup>
         <Field orientation="horizontal" className="gap-4">
-          <Button type="button" variant="outline" onClick={onPrevious}>
+          <Button
+            type="button"
+            variant="outline"
+            className="ml-auto"
+            onClick={onPrevious}
+          >
             Previous
           </Button>
           <Button type="submit" form="form-rhf-onboarding">
@@ -154,6 +159,6 @@ export const OnboardingPasswordForm = () => {
           </Button>
         </Field>
       </form>
-    </div>
+    </>
   );
 };

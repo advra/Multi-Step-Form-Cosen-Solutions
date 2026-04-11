@@ -101,14 +101,14 @@ export const OnboardingUsernameForm = () => {
   }, [form]);
 
   return (
-    <div>
+    <>
       <span className="text-lg font-semibold">Account Information</span>
       <form
         id="form-rhf-onboarding"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
-        <FieldGroup className="max-w-md">
+        <FieldGroup>
           <Controller
             name="username"
             control={form.control}
@@ -128,7 +128,7 @@ export const OnboardingUsernameForm = () => {
             )}
           />
         </FieldGroup>
-        <FieldGroup className="max-w-md">
+        <FieldGroup>
           <Controller
             name="terms"
             control={form.control}
@@ -144,10 +144,12 @@ export const OnboardingUsernameForm = () => {
                 />
                 <FieldContent>
                   <FieldLabel htmlFor={field.name}>
-                    Accept terms and conditions
+                    I accept terms and conditions
                   </FieldLabel>
                   <FieldDescription>
-                    By clicking this checkbox, you agree to the terms.
+                    By clicking this checkbox, you agree to the Terms and
+                    Conditions for registering with the use of email
+                    notifications through for our services.
                   </FieldDescription>
                   {fieldState.invalid && (
                     <FieldError errors={[fieldState.error]} />
@@ -158,7 +160,12 @@ export const OnboardingUsernameForm = () => {
           />
         </FieldGroup>
         <Field orientation="horizontal" className="gap-4">
-          <Button type="button" variant="outline" onClick={onPrevious}>
+          <Button
+            type="button"
+            variant="outline"
+            className="ml-auto"
+            onClick={onPrevious}
+          >
             Previous
           </Button>
           <Button type="submit" form="form-rhf-onboarding">
@@ -166,6 +173,6 @@ export const OnboardingUsernameForm = () => {
           </Button>
         </Field>
       </form>
-    </div>
+    </>
   );
 };
