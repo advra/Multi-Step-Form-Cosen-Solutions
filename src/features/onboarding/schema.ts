@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-// the object we will submit to the backend which contains all the data
-export const onboardingSchema = z.object({
+// Base schema without password matching validation
+export const onboardingBaseSchema = z.object({
   username: z.string().min(3).max(20),
   firstName: z.string().min(2).max(20),
   lastName: z.string().min(2).max(20),
@@ -9,5 +9,14 @@ export const onboardingSchema = z.object({
   repeatPassword: z.string().min(8).max(20),
   terms: z.boolean().refine((data)=>data)
 });
+
+// Full schema with password matching validation
+export const onboardingSchema = onboardingBaseSchema.refine(
+  (data) => data.password === data.repeatPassword,
+  {
+    message: "Passwords don't match",
+    path: ["repeatPassword"],
+  }
+);
 
 export type OnboardingSchema = z.infer<typeof onboardingSchema>;

@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { onboardingSchema } from "../schema";
+import { onboardingBaseSchema } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Field,
@@ -14,10 +14,15 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import InputPassword from "@/components/ui/custom/input-password";
 
-const onboardingPasswordSchema = onboardingSchema.pick({
-  password: true,
-  repeatPassword: true,
-});
+const onboardingPasswordSchema = onboardingBaseSchema
+  .pick({
+    password: true,
+    repeatPassword: true,
+  })
+  .refine((data) => data.password === data.repeatPassword, {
+    message: "Passwords don't match",
+    path: ["repeatPassword"],
+  });
 
 type OnboardingPasswordSchema = z.infer<typeof onboardingPasswordSchema>;
 

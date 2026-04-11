@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
-import { onboardingSchema } from "../schema";
+import { onboardingBaseSchema } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Field,
@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
-const onboardingNameSchema = onboardingSchema.pick({
+const onboardingNameSchema = onboardingBaseSchema.pick({
   firstName: true,
   lastName: true,
 });
