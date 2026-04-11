@@ -1,5 +1,11 @@
-export const OnaboardingPasswordPage = () => {
-  return <div>Password</div>;
+import { OnboardingPasswordForm } from "@/features/onboarding/components/onboarding-password-form";
+
+export const OnboardingNamePage = () => {
+  return (
+    <div className="mx-auto min-w-3xl">
+      <OnboardingPasswordForm />
+    </div>
+  );
 };
 
-export default OnaboardingPasswordPage;
+export default OnboardingNamePage;

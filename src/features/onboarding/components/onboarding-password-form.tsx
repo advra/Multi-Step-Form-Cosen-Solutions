@@ -10,37 +10,36 @@ import {
   FieldGroup,
   FieldLabel,
 } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import InputPassword from "@/components/ui/custom/input-password";
 
-const onboardingNameSchema = onboardingSchema.pick({
-  firstName: true,
-  lastName: true,
+const onboardingPasswordSchema = onboardingSchema.pick({
+  password: true,
+  repeatPassword: true,
 });
 
-type OnboardingNameSchema = z.infer<typeof onboardingNameSchema>;
+type OnboardingPasswordSchema = z.infer<typeof onboardingPasswordSchema>;
 
-export const OnboardingNameForm = () => {
+export const OnboardingPasswordForm = () => {
   const router = useRouter();
 
-  const form = useForm<OnboardingNameSchema>({
-    resolver: zodResolver(onboardingNameSchema),
+  const form = useForm<OnboardingPasswordSchema>({
+    resolver: zodResolver(onboardingPasswordSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      password: "",
+      repeatPassword: "",
     },
   });
 
-  const onSubmit = (data: OnboardingNameSchema) => {
-    router.push("/onboarding/password");
+  const onSubmit = (data: OnboardingPasswordSchema) => {
+    router.push("/onboarding/username");
     console.log(data);
   };
 
   return (
     <div>
-      <span className="text-lg font-semibold">Personal Information</span>
+      <span className="text-lg font-semibold">Password Details</span>
       <form
         id="form-rhf-onboarding"
         onSubmit={form.handleSubmit(onSubmit)}
@@ -48,19 +47,15 @@ export const OnboardingNameForm = () => {
       >
         <FieldGroup>
           <Controller
-            name="firstName"
+            name="password"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="form-rhf-first-name">
-                  First Name
-                </FieldLabel>
-                <Input
+                <FieldLabel htmlFor="form-rhf-password">Password</FieldLabel>
+                <InputPassword
                   {...field}
-                  id="form-rhf-first-name"
+                  id="form-rhf-password"
                   aria-invalid={fieldState.invalid}
-                  placeholder="John"
-                  autoComplete="off"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
@@ -69,17 +64,17 @@ export const OnboardingNameForm = () => {
             )}
           />
           <Controller
-            name="lastName"
+            name="repeatPassword"
             control={form.control}
             render={({ field, fieldState }) => (
               <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor="form-rhf-last-name">Last Name</FieldLabel>
-                <Input
+                <FieldLabel htmlFor="form-rhf-confirm-password">
+                  Confirm Password
+                </FieldLabel>
+                <InputPassword
                   {...field}
-                  id="form-rhf-last-name"
+                  id="form-rhf-confirm-password"
                   aria-invalid={fieldState.invalid}
-                  placeholder="Doe"
-                  autoComplete="off"
                 />
                 {fieldState.invalid && (
                   <FieldError errors={[fieldState.error]} />
