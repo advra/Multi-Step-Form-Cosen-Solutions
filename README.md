@@ -6,15 +6,12 @@ Multistep from based off of [Cosden Solutions Youtube Video](https://www.youtube
 
 This uses zod for the schema, react hook form coupled with zustand for localstorage and persistance.
 
+```
+bun install
+```
 First, run the development server:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
 bun dev
 ```
 
