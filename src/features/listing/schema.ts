@@ -17,6 +17,41 @@ import {
 
 const productTypeSchema = z.enum(PRODUCT_TYPES);
 const listingTypeSchema = z.enum(LISTING_TYPES);
+
+// Step schemas for multi-step listing flow
+export const franchiseSelectionSchema = z.object({
+  franchise: z.enum(FRANCHISES),
+});
+export type FranchiseSelectionSchema = z.infer<typeof franchiseSelectionSchema>;
+
+export const productSelectionSchema = z
+  .object({
+    productType: productTypeSchema,
+    sealedProductType: z
+      .union([
+        z.enum(POKEMON_SEALED_PRODUCT_TYPES),
+        z.enum(YUGIOH_SEALED_PRODUCT_TYPES),
+      ])
+      .optional(),
+  })
+  .superRefine((val, ctx) => {
+    if (val.productType === "sealed_product" && !val.sealedProductType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Select a sealed product type",
+        path: ["sealedProductType"],
+      });
+    }
+
+    if (val.productType !== "sealed_product" && val.sealedProductType) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Sealed product subtype only applies to sealed items",
+        path: ["sealedProductType"],
+      });
+    }
+  });
+export type ProductSelectionSchema = z.infer<typeof productSelectionSchema>;
 const refundPolicySchema = z.enum(REFUND_POLICY_OPTIONS.map(o => o.value) as [string, ...string[]]);
 
 export const listingBaseSchema = z.object({
