@@ -1,6 +1,7 @@
 import { z } from "zod";
 import {
   CARD_TYPES,
+  CATEGORIES,
   FRANCHISES,
   LISTING_TYPES,
   POKEMON_SEALED_PRODUCT_TYPES,
@@ -17,10 +18,17 @@ import {
 
 const productTypeSchema = z.enum(PRODUCT_TYPES);
 const listingTypeSchema = z.enum(LISTING_TYPES);
+const categorySchema = z.enum(CATEGORIES);
+
+// New category step schema
+export const categorySelectionSchema = z.object({
+  category: categorySchema,
+});
+export type CategorySelectionSchema = z.infer<typeof categorySelectionSchema>;
 
 // Step schemas for multi-step listing flow
 export const franchiseSelectionSchema = z.object({
-  franchise: z.enum(FRANCHISES),
+  primaryFranchise: z.enum(FRANCHISES),
 });
 export type FranchiseSelectionSchema = z.infer<typeof franchiseSelectionSchema>;
 
@@ -55,7 +63,8 @@ export type ProductSelectionSchema = z.infer<typeof productSelectionSchema>;
 const refundPolicySchema = z.enum(REFUND_POLICY_OPTIONS.map(o => o.value) as [string, ...string[]]);
 
 export const listingBaseSchema = z.object({
-    franchises: z.array(z.enum(FRANCHISES)).min(1),
+    category: categorySchema,
+    primaryFranchise: z.enum(FRANCHISES),
     productType: productTypeSchema,
     title: z.string().min(10).max(50),
     description: z.string().min(25).max(2000),

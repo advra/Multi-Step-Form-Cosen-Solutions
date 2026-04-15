@@ -4,6 +4,10 @@ import { z } from "zod";
 export const PRODUCT_TYPES = ["sealed_product", "card"] as const;
 export type ProductType = (typeof PRODUCT_TYPES)[number];
 
+// Top-level marketplace categories (extend later if adding new verticals)
+export const CATEGORIES = ["tcg"] as const;
+export type Category = (typeof CATEGORIES)[number];
+
 export const POKEMON_SEALED_PRODUCT_TYPES = ["booster_box", "booster_bundle", "etb", "etb_pkc", "blister_pack", "booster_pack"] as const;
 export type PokemonSealedProductType = (typeof POKEMON_SEALED_PRODUCT_TYPES)[number];
 

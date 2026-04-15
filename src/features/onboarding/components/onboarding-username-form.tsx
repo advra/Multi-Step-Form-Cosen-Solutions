@@ -166,7 +166,7 @@ export const OnboardingUsernameForm = () => {
             className="ml-auto"
             onClick={onPrevious}
           >
-            Previous
+            Back
           </Button>
           <Button type="submit" form="form-rhf-onboarding">
             Submit

@@ -3,12 +3,19 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
+  CategorySelectionSchema,
   FranchiseSelectionSchema,
   ProductSelectionSchema,
 } from "@/features/listing/schema";
 
-type ListingState = Partial<FranchiseSelectionSchema & ProductSelectionSchema> & {
-  setData: (data: Partial<FranchiseSelectionSchema & ProductSelectionSchema>) => void;
+type ListingState = Partial<
+  CategorySelectionSchema &
+  FranchiseSelectionSchema &
+  ProductSelectionSchema
+> & {
+  setData: (
+    data: Partial<CategorySelectionSchema & FranchiseSelectionSchema & ProductSelectionSchema>
+  ) => void;
 };
 
 export const useListingStore = create<ListingState>()(

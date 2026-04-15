@@ -4,11 +4,11 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -16,51 +16,34 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { franchiseSelectionSchema } from "../schema";
-import { FRANCHISES } from "@/features/listing.type";
+import { categorySelectionSchema } from "../schema";
+import { CATEGORIES } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
-import { useEffect } from "react";
 
-const franchiseSchema = franchiseSelectionSchema;
-type FranchiseSchema = z.infer<typeof franchiseSchema>;
+const categorySchema = categorySelectionSchema;
+type CategorySchema = z.infer<typeof categorySchema>;
 
-export const ListingFranchiseForm = () => {
+export const ListingCategoryForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
-  const category = useListingStore((state) => (state as any).category);
 
-  const form = useForm<FranchiseSchema>({
-    resolver: zodResolver(franchiseSchema),
+  const form = useForm<CategorySchema>({
+    resolver: zodResolver(categorySchema),
     defaultValues: {
-      primaryFranchise: undefined,
+      category: undefined,
     },
   });
 
-  const onSubmit = (data: FranchiseSchema) => {
+  const onSubmit = (data: CategorySchema) => {
     setData(data);
-    router.push("/listing/product");
+    router.push("/listing/franchise");
   };
-
-  useEffect(() => {
-    // redirect if category not selected
-    if (!category) {
-      router.push("/listing/category");
-    }
-  }, [category, router]);
 
   useEffect(() => {
     const handleHydration = () => {
       const state = useListingStore.getState() as any;
-      if (state.primaryFranchise) {
-        form.reset({
-          primaryFranchise: state.primaryFranchise,
-        });
-        return;
-      }
-
-      // backward compatibility: previously stored `franchise`
-      if (state.franchise) {
-        form.reset({ primaryFranchise: state.franchise });
+      if (state.category) {
+        form.reset({ category: state.category });
       }
     };
 
@@ -77,37 +60,37 @@ export const ListingFranchiseForm = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Select Franchise</span>
+      <span className="text-lg font-semibold">Select Category</span>
       <form
-        id="form-listing-franchise"
+        id="form-listing-category"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
         <FieldSet>
-          <FieldLegend>Primary franchise (required)</FieldLegend>
+          <FieldLegend>Marketplace category</FieldLegend>
           <FieldGroup data-slot="radio-group">
-            {FRANCHISES.map((franchise) => (
+            {CATEGORIES.map((category) => (
               <Controller
-                key={franchise}
-                name="primaryFranchise"
+                key={category}
+                name="category"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid} orientation="responsive">
-                    <FieldLabel htmlFor={`franchise-${franchise}`}>
+                    <FieldLabel htmlFor={`category-${category}`}>
                       <div className="flex items-center gap-3">
                         <input
                           type="radio"
-                          id={`franchise-${franchise}`}
-                          value={franchise}
-                          checked={field.value === franchise}
-                          onChange={() => field.onChange(franchise)}
+                          id={`category-${category}`}
+                          value={category}
+                          checked={field.value === category}
+                          onChange={() => field.onChange(category)}
                           onBlur={field.onBlur}
                           name={field.name}
                           className="h-4 w-4"
                         />
                         <FieldContent>
                           <div className="flex items-center gap-2">
-                            <span className="capitalize font-medium">{franchise}</span>
+                            <span className="capitalize font-medium">{category}</span>
                           </div>
                         </FieldContent>
                       </div>
@@ -120,16 +103,8 @@ export const ListingFranchiseForm = () => {
           </FieldGroup>
         </FieldSet>
 
-        <Field orientation="horizontal" className="gap-4">
-          <Button
-            type="button"
-            variant="outline"
-            className="ml-auto"
-            onClick={() => router.push("/listing/category")}
-          >
-            Back
-          </Button>
-          <Button type="submit" form="form-listing-franchise">
+        <Field orientation="horizontal">
+          <Button type="submit" form="form-listing-category" className="ml-auto">
             Next
           </Button>
         </Field>

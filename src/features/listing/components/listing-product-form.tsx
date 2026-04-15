@@ -31,7 +31,8 @@ type ProductSchema = z.infer<typeof productSchema>;
 export const ListingProductForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
-  const franchise = useListingStore((state) => state.franchise);
+  const primaryFranchise = useListingStore((state) => (state as any).primaryFranchise ?? (state as any).franchise);
+  const category = useListingStore((state) => (state as any).category);
 
   const form = useForm<ProductSchema>({
     resolver: zodResolver(productSchema),
@@ -42,17 +43,21 @@ export const ListingProductForm = () => {
   });
 
   const sealedOptions = useMemo(() => {
-    if (franchise === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
-    if (franchise === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
+    if (primaryFranchise === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
+    if (primaryFranchise === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
     return [];
-  }, [franchise]);
+  }, [primaryFranchise]);
 
   useEffect(() => {
     // Redirect back if franchise not chosen
-    if (!franchise) {
+    if (!primaryFranchise) {
       router.push("/listing/franchise");
+      return;
     }
-  }, [franchise, router]);
+    if (!category) {
+      router.push("/listing/category");
+    }
+  }, [primaryFranchise, category, router]);
 
   useEffect(() => {
     const handleHydration = () => {
@@ -117,7 +122,7 @@ export const ListingProductForm = () => {
                           </div>
                           <FieldDescription>
                             {type === "sealed_product"
-                              ? "Factory sealed boxes/bundles"
+                              ? "Factory sealed items, boxes or bundles"
                               : "Individual cards (graded or raw)"}
                           </FieldDescription>
                         </FieldContent>
@@ -175,7 +180,7 @@ export const ListingProductForm = () => {
             className="ml-auto"
             onClick={() => router.push("/listing/franchise")}
           >
-            Previous
+            Back
           </Button>
           <Button type="submit" form="form-listing-product">
             Finish
