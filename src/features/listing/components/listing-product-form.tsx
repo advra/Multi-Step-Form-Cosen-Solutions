@@ -24,6 +24,9 @@ import {
   YUGIOH_SEALED_PRODUCT_TYPES,
   YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES,
   PRODUCT_TYPES,
+  Franchise,
+  PokemonSealedProductType,
+  YugiohSealedProductType,
 } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
 
@@ -51,6 +54,30 @@ export const ListingProductForm = () => {
     if (primaryFranchise === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
     return [];
   }, [primaryFranchise]);
+
+  const getSealedProductDisplayName = (
+    franchise: Franchise | undefined,
+    option: string,
+  ) => {
+    if (!franchise) return option;
+
+    switch (franchise) {
+      case "pokemon":
+        return (
+          POKEMON_SEALED_PRODUCT_DISPLAY_NAMES[
+            option as PokemonSealedProductType
+          ] || option
+        );
+      case "yugioh":
+        return (
+          YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES[
+            option as YugiohSealedProductType
+          ] || option
+        );
+      default:
+        return option;
+    }
+  };
 
   useEffect(() => {
     // Redirect back if franchise not chosen
@@ -177,10 +204,10 @@ export const ListingProductForm = () => {
                           />
                           <FieldContent>
                             <span className="font-medium">
-                              {primaryFranchise === "pokemon" &&
-                                POKEMON_SEALED_PRODUCT_DISPLAY_NAMES[option]}
-                              {primaryFranchise === "yugioh" &&
-                                YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES[option]}
+                              {getSealedProductDisplayName(
+                                primaryFranchise,
+                                option,
+                              )}
                             </span>
                           </FieldContent>
                         </div>
