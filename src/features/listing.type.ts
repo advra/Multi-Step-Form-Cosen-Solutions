@@ -12,7 +12,19 @@ export const CATEGORY_DISPLAY_NAMES: Record<Category, string> = {
   video_games: "Video Games",
 } as const;
 
-export const POKEMON_SEALED_PRODUCT_TYPES = ["booster_box", "booster_bundle", "etb", "etb_pkc", "tin", "blister_pack", "booster_pack"] as const;
+export const POKEMON_SEALED_PRODUCT_TYPES = [
+  "booster_box",
+  "booster_bundle",
+  "etb",
+  "etb_pkc",
+  "booster_pack",
+  "tin",
+  "blister_pack",
+  "three_blister_pack",
+  "pokeball_tin",
+  "upc",
+  "spc",
+] as const;
 export type PokemonSealedProductType = (typeof POKEMON_SEALED_PRODUCT_TYPES)[number];
 export const POKEMON_SEALED_PRODUCT_DISPLAY_NAMES: Record<
   PokemonSealedProductType,
@@ -21,10 +33,14 @@ export const POKEMON_SEALED_PRODUCT_DISPLAY_NAMES: Record<
   booster_box: "Booster Box",
   booster_bundle: "Booster Bundle",
   etb: "Elite Trainer Box (ETB)",
-  etb_pkc: "Elite Trainer Box Pokemon Center (ETB PC)",
+  etb_pkc: "Elite Trainer Box Pokemon Center (PCETB)",
   tin: "Tin",
   blister_pack: "Blister Pack",
+  three_blister_pack: "3 Pack Blister",
   booster_pack: "Booster Pack",
+  pokeball_tin: "Poke Ball Tin",
+  upc: "Ultra Premium Collection (UPC)",
+  spc: "Super Premium Collection (SPC)",
 } as const;
 
 export const YUGIOH_SEALED_PRODUCT_TYPES = [
