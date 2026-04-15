@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { franchiseSelectionSchema } from "../schema";
-import { FRANCHISES } from "@/features/listing.type";
+import { FRANCHISES, FRANCHISE_DISPLAY_NAMES } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
 import { useEffect } from "react";
 
@@ -77,14 +77,14 @@ export const ListingFranchiseForm = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Select Franchise</span>
+      <span className="text-lg font-semibold">Franchise Information</span>
       <form
         id="form-listing-franchise"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
         <FieldSet>
-          <FieldLegend>Primary franchise (required)</FieldLegend>
+          <FieldLegend>Choose a franchise for this listing</FieldLegend>
           <FieldGroup data-slot="radio-group">
             {FRANCHISES.map((franchise) => (
               <Controller
@@ -92,7 +92,10 @@ export const ListingFranchiseForm = () => {
                 name="primaryFranchise"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} orientation="responsive">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    orientation="responsive"
+                  >
                     <FieldLabel htmlFor={`franchise-${franchise}`}>
                       <div className="flex items-center gap-3">
                         <input
@@ -107,12 +110,16 @@ export const ListingFranchiseForm = () => {
                         />
                         <FieldContent>
                           <div className="flex items-center gap-2">
-                            <span className="capitalize font-medium">{franchise}</span>
+                            <span className="font-medium">
+                              {FRANCHISE_DISPLAY_NAMES[franchise]}
+                            </span>
                           </div>
                         </FieldContent>
                       </div>
                     </FieldLabel>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />

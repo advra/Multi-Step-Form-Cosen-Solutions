@@ -5,19 +5,55 @@ export const PRODUCT_TYPES = ["sealed_product", "card"] as const;
 export type ProductType = (typeof PRODUCT_TYPES)[number];
 
 // Top-level marketplace categories (extend later if adding new verticals)
-export const CATEGORIES = ["tcg"] as const;
+export const CATEGORIES = ["tcg", "video_games"] as const;
 export type Category = (typeof CATEGORIES)[number];
+export const CATEGORY_DISPLAY_NAMES: Record<Category, string> = {
+  tcg: "Trading Card Game",
+  video_games: "Video Games",
+} as const;
 
-export const POKEMON_SEALED_PRODUCT_TYPES = ["booster_box", "booster_bundle", "etb", "etb_pkc", "blister_pack", "booster_pack"] as const;
+export const POKEMON_SEALED_PRODUCT_TYPES = ["booster_box", "booster_bundle", "etb", "etb_pkc", "tin", "blister_pack", "booster_pack"] as const;
 export type PokemonSealedProductType = (typeof POKEMON_SEALED_PRODUCT_TYPES)[number];
+export const POKEMON_SEALED_PRODUCT_DISPLAY_NAMES: Record<
+  PokemonSealedProductType,
+  string
+> = {
+  booster_box: "Booster Box",
+  booster_bundle: "Booster Bundle",
+  etb: "Elite Trainer Box (ETB)",
+  etb_pkc: "Elite Trainer Box Pokemon Center (ETB PC)",
+  tin: "Tin",
+  blister_pack: "Blister Pack",
+  booster_pack: "Booster Pack",
+} as const;
 
-export const YUGIOH_SEALED_PRODUCT_TYPES = ["booster_box", "blister_pack", "booster_pack"] as const;
+export const YUGIOH_SEALED_PRODUCT_TYPES = [
+  "booster_pack",
+  "booster_box",
+  "structure_deck",
+  "starter_deck",
+  "tin",
+] as const;
 export type YugiohSealedProductType = (typeof YUGIOH_SEALED_PRODUCT_TYPES)[number];
+export const YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES: Record<
+  YugiohSealedProductType,
+  string
+> = {
+  booster_pack: "Booster Pack",
+  booster_box: "Booster Box",
+  structure_deck: "Structure Deck",
+  starter_deck: "Starter Deck",
+  tin: "Tin",
+} as const;
 
 
 // Multi-franchise support (can be extended later, keep snake_case)
 export const FRANCHISES = ["pokemon", "yugioh"] as const;
 export type Franchise = (typeof FRANCHISES)[number];
+export const FRANCHISE_DISPLAY_NAMES: Record<Franchise, string> = {
+  pokemon: "Pokémon",
+  yugioh: "Yu-Gi-Oh!",
+} as const;
 
 // Card conditions/types
 export const CARD_TYPES = ["graded", "raw"] as const;

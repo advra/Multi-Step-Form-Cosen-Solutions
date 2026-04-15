@@ -20,7 +20,9 @@ import { Button } from "@/components/ui/button";
 import { productSelectionSchema } from "../schema";
 import {
   POKEMON_SEALED_PRODUCT_TYPES,
+  POKEMON_SEALED_PRODUCT_DISPLAY_NAMES,
   YUGIOH_SEALED_PRODUCT_TYPES,
+  YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES,
   PRODUCT_TYPES,
 } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
@@ -31,7 +33,9 @@ type ProductSchema = z.infer<typeof productSchema>;
 export const ListingProductForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
-  const primaryFranchise = useListingStore((state) => (state as any).primaryFranchise ?? (state as any).franchise);
+  const primaryFranchise = useListingStore(
+    (state) => (state as any).primaryFranchise ?? (state as any).franchise,
+  );
   const category = useListingStore((state) => (state as any).category);
 
   const form = useForm<ProductSchema>({
@@ -88,14 +92,16 @@ export const ListingProductForm = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Select Product Type</span>
+      <span className="text-lg font-semibold">Product Information</span>
       <form
         id="form-listing-product"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
         <FieldSet>
-          <FieldLegend>Choose product type</FieldLegend>
+          <FieldLegend>
+            Choose the option which accurately describes the product
+          </FieldLegend>
           <FieldGroup data-slot="radio-group">
             {PRODUCT_TYPES.map((type) => (
               <Controller
@@ -103,7 +109,10 @@ export const ListingProductForm = () => {
                 name="productType"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} orientation="responsive">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    orientation="responsive"
+                  >
                     <FieldLabel htmlFor={`product-${type}`}>
                       <div className="flex items-center gap-3">
                         <input
@@ -118,7 +127,9 @@ export const ListingProductForm = () => {
                         />
                         <FieldContent>
                           <div className="flex items-center gap-2">
-                            <span className="capitalize font-medium">{type.replace("_", " ")}</span>
+                            <span className="capitalize font-medium">
+                              {type.replace("_", " ")}
+                            </span>
                           </div>
                           <FieldDescription>
                             {type === "sealed_product"
@@ -128,7 +139,9 @@ export const ListingProductForm = () => {
                         </FieldContent>
                       </div>
                     </FieldLabel>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
@@ -138,7 +151,7 @@ export const ListingProductForm = () => {
 
         {showSealedSubtype && (
           <FieldSet>
-            <FieldLegend>Sealed subtype</FieldLegend>
+            <FieldLegend>Choose the product type</FieldLegend>
             <FieldGroup data-slot="radio-group">
               {sealedOptions.map((option) => (
                 <Controller
@@ -146,7 +159,10 @@ export const ListingProductForm = () => {
                   name="sealedProductType"
                   control={form.control}
                   render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid} orientation="responsive">
+                    <Field
+                      data-invalid={fieldState.invalid}
+                      orientation="responsive"
+                    >
                       <FieldLabel htmlFor={`sealed-${option}`}>
                         <div className="flex items-center gap-3">
                           <input
@@ -160,11 +176,18 @@ export const ListingProductForm = () => {
                             className="h-4 w-4"
                           />
                           <FieldContent>
-                            <span className="capitalize font-medium">{option.replace("_", " ")}</span>
+                            <span className="font-medium">
+                              {primaryFranchise === "pokemon" &&
+                                POKEMON_SEALED_PRODUCT_DISPLAY_NAMES[option]}
+                              {primaryFranchise === "yugioh" &&
+                                YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES[option]}
+                            </span>
                           </FieldContent>
                         </div>
                       </FieldLabel>
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
                     </Field>
                   )}
                 />

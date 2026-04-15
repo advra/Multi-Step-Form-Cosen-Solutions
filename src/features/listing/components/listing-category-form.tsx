@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
 import { categorySelectionSchema } from "../schema";
-import { CATEGORIES } from "@/features/listing.type";
+import { CATEGORIES, CATEGORY_DISPLAY_NAMES } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
 
 const categorySchema = categorySelectionSchema;
@@ -60,14 +60,14 @@ export const ListingCategoryForm = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Select Category</span>
+      <span className="text-lg font-semibold">Category Information</span>
       <form
         id="form-listing-category"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
         <FieldSet>
-          <FieldLegend>Marketplace category</FieldLegend>
+          <FieldLegend>Choose a category for your listing</FieldLegend>
           <FieldGroup data-slot="radio-group">
             {CATEGORIES.map((category) => (
               <Controller
@@ -75,7 +75,10 @@ export const ListingCategoryForm = () => {
                 name="category"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} orientation="responsive">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    orientation="responsive"
+                  >
                     <FieldLabel htmlFor={`category-${category}`}>
                       <div className="flex items-center gap-3">
                         <input
@@ -90,12 +93,16 @@ export const ListingCategoryForm = () => {
                         />
                         <FieldContent>
                           <div className="flex items-center gap-2">
-                            <span className="capitalize font-medium">{category}</span>
+                            <span className="capitalize font-medium">
+                              {CATEGORY_DISPLAY_NAMES[category]}
+                            </span>
                           </div>
                         </FieldContent>
                       </div>
                     </FieldLabel>
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    {fieldState.invalid && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
                   </Field>
                 )}
               />
@@ -104,7 +111,11 @@ export const ListingCategoryForm = () => {
         </FieldSet>
 
         <Field orientation="horizontal">
-          <Button type="submit" form="form-listing-category" className="ml-auto">
+          <Button
+            type="submit"
+            form="form-listing-category"
+            className="ml-auto"
+          >
             Next
           </Button>
         </Field>
