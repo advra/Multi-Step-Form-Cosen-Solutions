@@ -1,5 +1,11 @@
 import { z } from "zod";
 
+/*
+  Note: We use the schema sensitive data such as password in here using store. This is no secure and 
+  should not be used as production. Ensure this is properly encrypted to avoid security 
+  vulnerabilites by hashing against database 
+*/
+
 // Base schema without password matching validation
 export const onboardingBaseSchema = z.object({
   username: z.string().min(3).max(20),
