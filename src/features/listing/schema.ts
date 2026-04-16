@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   CARD_TYPES,
   CATEGORIES,
-  FRANCHISES,
+  BRANDS,
   LISTING_TYPES,
   POKEMON_SEALED_PRODUCT_TYPES,
   PRODUCT_TYPES,
@@ -27,10 +27,10 @@ export const categorySelectionSchema = z.object({
 export type CategorySelectionSchema = z.infer<typeof categorySelectionSchema>;
 
 // Step schemas for multi-step listing flow
-export const franchiseSelectionSchema = z.object({
-  primaryFranchise: z.enum(FRANCHISES),
+export const brandSelectionSchema = z.object({
+  primaryBrand: z.enum(BRANDS),
 });
-export type FranchiseSelectionSchema = z.infer<typeof franchiseSelectionSchema>;
+export type BrandSelectionSchema = z.infer<typeof brandSelectionSchema>;
 
 export const productSelectionSchema = z
   .object({
@@ -64,7 +64,7 @@ const refundPolicySchema = z.enum(REFUND_POLICY_OPTIONS.map(o => o.value) as [st
 
 export const listingBaseSchema = z.object({
     category: categorySchema,
-    primaryFranchise: z.enum(FRANCHISES),
+    primaryBrand: z.enum(BRANDS),
     productType: productTypeSchema,
     title: z.string().min(10).max(50),
     description: z.string().min(25).max(2000),
@@ -75,30 +75,30 @@ export const listingBaseSchema = z.object({
     refundPolicy: refundPolicySchema,
 })
 
-// Sealed details discriminated by franchise
-export const sealedProductDetailsSchema = z.discriminatedUnion("franchise", [
+// Sealed details discriminated by brand
+export const sealedProductDetailsSchema = z.discriminatedUnion("brand", [
   z.object({
-    franchise: z.literal("pokemon"),
+    brand: z.literal("pokemon"),
     sealedProductType: z.enum(POKEMON_SEALED_PRODUCT_TYPES),
     metadata: pokemonSealedMetadataSchema.optional(),
   }),
   z.object({
-    franchise: z.literal("yugioh"),
+    brand: z.literal("yugioh"),
     sealedProductType: z.enum(YUGIOH_SEALED_PRODUCT_TYPES),
     metadata: yugiohSealedMetadataSchema.optional(),
   }),
 ]);
 
-// Card details discriminated by franchise
-const cardDetailsSchemaBase = z.discriminatedUnion("franchise", [
+// Card details discriminated by brand
+const cardDetailsSchemaBase = z.discriminatedUnion("brand", [
   z.object({
-    franchise: z.literal("pokemon"),
+    brand: z.literal("pokemon"),
     cardType: z.enum(CARD_TYPES),
     metadata: pokemonCardMetadataSchema,
     grading: gradingDetailsSchema.optional(),
   }),
   z.object({
-    franchise: z.literal("yugioh"),
+    brand: z.literal("yugioh"),
     cardType: z.enum(CARD_TYPES),
     metadata: yugiohCardMetadataSchema,
     grading: gradingDetailsSchema.optional(),

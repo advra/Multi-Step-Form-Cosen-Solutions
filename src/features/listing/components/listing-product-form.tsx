@@ -24,7 +24,7 @@ import {
   YUGIOH_SEALED_PRODUCT_TYPES,
   YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES,
   PRODUCT_TYPES,
-  Franchise,
+  Brand,
   PokemonSealedProductType,
   YugiohSealedProductType,
 } from "@/features/listing.type";
@@ -36,8 +36,8 @@ type ProductSchema = z.infer<typeof productSchema>;
 export const ListingProductForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
-  const primaryFranchise = useListingStore(
-    (state) => (state as any).primaryFranchise ?? (state as any).franchise,
+  const primaryBrand = useListingStore(
+    (state) => (state as any).primaryBrand ?? (state as any).brand,
   );
   const category = useListingStore((state) => (state as any).category);
 
@@ -50,18 +50,18 @@ export const ListingProductForm = () => {
   });
 
   const sealedOptions = useMemo(() => {
-    if (primaryFranchise === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
-    if (primaryFranchise === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
+    if (primaryBrand === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
+    if (primaryBrand === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
     return [];
-  }, [primaryFranchise]);
+  }, [primaryBrand]);
 
   const getSealedProductDisplayName = (
-    franchise: Franchise | undefined,
+    brand: Brand | undefined,
     option: string,
   ) => {
-    if (!franchise) return option;
+    if (!brand) return option;
 
-    switch (franchise) {
+    switch (brand) {
       case "pokemon":
         return (
           POKEMON_SEALED_PRODUCT_DISPLAY_NAMES[
@@ -80,15 +80,15 @@ export const ListingProductForm = () => {
   };
 
   useEffect(() => {
-    // Redirect back if franchise not chosen
-    if (!primaryFranchise) {
-      router.push("/listing/franchise");
+    // Redirect back if brand not chosen
+    if (!primaryBrand) {
+      router.push("/listing/brand");
       return;
     }
     if (!category) {
       router.push("/listing/category");
     }
-  }, [primaryFranchise, category, router]);
+  }, [primaryBrand, category, router]);
 
   useEffect(() => {
     const handleHydration = () => {
@@ -205,7 +205,7 @@ export const ListingProductForm = () => {
                           <FieldContent>
                             <span className="font-medium">
                               {getSealedProductDisplayName(
-                                primaryFranchise,
+                                primaryBrand,
                                 option,
                               )}
                             </span>
@@ -228,7 +228,7 @@ export const ListingProductForm = () => {
             type="button"
             variant="outline"
             className="ml-auto"
-            onClick={() => router.push("/listing/franchise")}
+            onClick={() => router.push("/listing/brand")}
           >
             Back
           </Button>

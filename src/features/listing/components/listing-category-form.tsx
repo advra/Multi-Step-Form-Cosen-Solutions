@@ -36,7 +36,7 @@ export const ListingCategoryForm = () => {
 
   const onSubmit = (data: CategorySchema) => {
     setData(data);
-    router.push("/listing/franchise");
+    router.push("/listing/brand");
   };
 
   useEffect(() => {

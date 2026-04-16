@@ -63,10 +63,10 @@ export const YUGIOH_SEALED_PRODUCT_DISPLAY_NAMES: Record<
 } as const;
 
 
-// Multi-franchise support (can be extended later, keep snake_case)
-export const FRANCHISES = ["pokemon", "yugioh"] as const;
-export type Franchise = (typeof FRANCHISES)[number];
-export const FRANCHISE_DISPLAY_NAMES: Record<Franchise, string> = {
+// Multi-brand support (can be extended later, keep snake_case)
+export const BRANDS = ["pokemon", "yugioh"] as const;
+export type Brand = (typeof BRANDS)[number];
+export const BRAND_DISPLAY_NAMES: Record<Brand, string> = {
   pokemon: "Pokémon",
   yugioh: "Yu-Gi-Oh!",
 } as const;
@@ -75,7 +75,7 @@ export const FRANCHISE_DISPLAY_NAMES: Record<Franchise, string> = {
 export const CARD_TYPES = ["graded", "raw"] as const;
 export type CardType = (typeof CARD_TYPES)[number];
 
-// Sealed subtypes (franchise specific)
+// Sealed subtypes (brand specific)
 export const POKEMON_SEALED_TYPES = [
   "booster_box",
   "booster_bundle",

@@ -16,27 +16,27 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { Button } from "@/components/ui/button";
-import { franchiseSelectionSchema } from "../schema";
-import { FRANCHISES, FRANCHISE_DISPLAY_NAMES } from "@/features/listing.type";
+import { brandSelectionSchema } from "../schema";
+import { BRANDS, BRAND_DISPLAY_NAMES } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
 import { useEffect } from "react";
 
-const franchiseSchema = franchiseSelectionSchema;
-type FranchiseSchema = z.infer<typeof franchiseSchema>;
+const brandSchema = brandSelectionSchema;
+type BrandSchema = z.infer<typeof brandSchema>;
 
-export const ListingFranchiseForm = () => {
+export const ListingBrandForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
   const category = useListingStore((state) => (state as any).category);
 
-  const form = useForm<FranchiseSchema>({
-    resolver: zodResolver(franchiseSchema),
+  const form = useForm<BrandSchema>({
+    resolver: zodResolver(brandSchema),
     defaultValues: {
-      primaryFranchise: undefined,
+      primaryBrand: undefined,
     },
   });
 
-  const onSubmit = (data: FranchiseSchema) => {
+  const onSubmit = (data: BrandSchema) => {
     setData(data);
     router.push("/listing/product");
   };
@@ -51,16 +51,16 @@ export const ListingFranchiseForm = () => {
   useEffect(() => {
     const handleHydration = () => {
       const state = useListingStore.getState() as any;
-      if (state.primaryFranchise) {
+      if (state.primaryBrand) {
         form.reset({
-          primaryFranchise: state.primaryFranchise,
+          primaryBrand: state.primaryBrand,
         });
         return;
       }
 
-      // backward compatibility: previously stored `franchise`
-      if (state.franchise) {
-        form.reset({ primaryFranchise: state.franchise });
+      // backward compatibility: previously stored `brand`
+      if (state.brand) {
+        form.reset({ primaryBrand: state.brand });
       }
     };
 
@@ -77,33 +77,33 @@ export const ListingFranchiseForm = () => {
 
   return (
     <>
-      <span className="text-lg font-semibold">Franchise Information</span>
+      <span className="text-lg font-semibold">Brand Information</span>
       <form
-        id="form-listing-franchise"
+        id="form-listing-brand"
         onSubmit={form.handleSubmit(onSubmit)}
         className="w-full space-y-8"
       >
         <FieldSet>
-          <FieldLegend>Choose a franchise for this listing</FieldLegend>
+          <FieldLegend>Choose the primary brand for this listing</FieldLegend>
           <FieldGroup data-slot="radio-group">
-            {FRANCHISES.map((franchise) => (
+            {BRANDS.map((brand) => (
               <Controller
-                key={franchise}
-                name="primaryFranchise"
+                key={brand}
+                name="primaryBrand"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field
                     data-invalid={fieldState.invalid}
                     orientation="responsive"
                   >
-                    <FieldLabel htmlFor={`franchise-${franchise}`}>
+                    <FieldLabel htmlFor={`brand-${brand}`}>
                       <div className="flex items-center gap-3">
                         <input
                           type="radio"
-                          id={`franchise-${franchise}`}
-                          value={franchise}
-                          checked={field.value === franchise}
-                          onChange={() => field.onChange(franchise)}
+                          id={`brand-${brand}`}
+                          value={brand}
+                          checked={field.value === brand}
+                          onChange={() => field.onChange(brand)}
                           onBlur={field.onBlur}
                           name={field.name}
                           className="h-4 w-4"
@@ -111,7 +111,7 @@ export const ListingFranchiseForm = () => {
                         <FieldContent>
                           <div className="flex items-center gap-2">
                             <span className="font-medium">
-                              {FRANCHISE_DISPLAY_NAMES[franchise]}
+                              {BRAND_DISPLAY_NAMES[brand]}
                             </span>
                           </div>
                         </FieldContent>
@@ -136,7 +136,7 @@ export const ListingFranchiseForm = () => {
           >
             Back
           </Button>
-          <Button type="submit" form="form-listing-franchise">
+          <Button type="submit" form="form-listing-brand">
             Next
           </Button>
         </Field>

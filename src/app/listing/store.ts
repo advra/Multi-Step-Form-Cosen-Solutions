@@ -4,17 +4,17 @@ import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import {
   CategorySelectionSchema,
-  FranchiseSelectionSchema,
+  BrandSelectionSchema,
   ProductSelectionSchema,
 } from "@/features/listing/schema";
 
 type ListingState = Partial<
   CategorySelectionSchema &
-  FranchiseSelectionSchema &
+  BrandSelectionSchema &
   ProductSelectionSchema
 > & {
   setData: (
-    data: Partial<CategorySelectionSchema & FranchiseSelectionSchema & ProductSelectionSchema>
+    data: Partial<CategorySelectionSchema & BrandSelectionSchema & ProductSelectionSchema>
   ) => void;
 };
 
