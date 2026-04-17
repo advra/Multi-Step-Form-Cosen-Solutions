@@ -42,7 +42,7 @@ export const ListingCategoryForm = () => {
       // Always clear brand and product-related fields when category changes
       setData({
         ...data,
-        primaryBrand: undefined,
+        brand: undefined,
         productType: undefined,
         sealedProductType: undefined,
       });

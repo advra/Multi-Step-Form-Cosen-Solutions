@@ -28,7 +28,7 @@ export type CategorySelectionSchema = z.infer<typeof categorySelectionSchema>;
 
 // Step schemas for multi-step listing flow
 export const brandSelectionSchema = z.object({
-  primaryBrand: z.enum(BRANDS),
+  brand: z.enum(BRANDS),
 });
 export type BrandSelectionSchema = z.infer<typeof brandSelectionSchema>;
 
@@ -64,7 +64,7 @@ const refundPolicySchema = z.enum(REFUND_POLICY_OPTIONS.map(o => o.value) as [st
 
 export const listingBaseSchema = z.object({
     category: categorySchema,
-    primaryBrand: z.enum(BRANDS),
+    brand: z.enum(BRANDS),
     productType: productTypeSchema,
     title: z.string().min(10).max(50),
     description: z.string().min(25).max(2000),

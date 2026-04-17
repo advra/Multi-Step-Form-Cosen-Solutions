@@ -36,8 +36,8 @@ type ProductSchema = z.infer<typeof productSchema>;
 export const ListingProductForm = () => {
   const router = useRouter();
   const setData = useListingStore((state) => state.setData);
-  const primaryBrand = useListingStore(
-    (state) => (state as any).primaryBrand ?? (state as any).brand,
+  const brand = useListingStore(
+    (state) => (state as any).brand ?? (state as any).brand,
   );
   const category = useListingStore((state) => (state as any).category);
 
@@ -50,10 +50,10 @@ export const ListingProductForm = () => {
   });
 
   const sealedOptions = useMemo(() => {
-    if (primaryBrand === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
-    if (primaryBrand === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
+    if (brand === "pokemon") return POKEMON_SEALED_PRODUCT_TYPES;
+    if (brand === "yugioh") return YUGIOH_SEALED_PRODUCT_TYPES;
     return [];
-  }, [primaryBrand]);
+  }, [brand]);
 
   const getSealedProductDisplayName = (
     brand: Brand | undefined,
@@ -81,14 +81,14 @@ export const ListingProductForm = () => {
 
   useEffect(() => {
     // Redirect back if brand not chosen
-    if (!primaryBrand) {
+    if (!brand) {
       router.push("/listing/brand");
       return;
     }
     if (!category) {
       router.push("/listing/category");
     }
-  }, [primaryBrand, category, router]);
+  }, [brand, category, router]);
 
   useEffect(() => {
     const handleHydration = () => {
@@ -209,7 +209,7 @@ export const ListingProductForm = () => {
                           <FieldContent>
                             <span className="font-medium">
                               {getSealedProductDisplayName(
-                                primaryBrand,
+                                brand,
                                 option,
                               )}
                             </span>

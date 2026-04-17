@@ -31,7 +31,7 @@ export const ListingBrandForm = () => {
   const form = useForm<BrandSchema>({
     resolver: zodResolver(brandSchema),
     defaultValues: {
-      primaryBrand: undefined,
+      brand: undefined,
     },
   });
 
@@ -50,16 +50,16 @@ export const ListingBrandForm = () => {
   useEffect(() => {
     const handleHydration = () => {
       const state = useListingStore.getState() as any;
-      if (state.primaryBrand) {
+      if (state.brand) {
         form.reset({
-          primaryBrand: state.primaryBrand,
+          brand: state.brand,
         });
         return;
       }
 
       // backward compatibility: previously stored `brand`
       if (state.brand) {
-        form.reset({ primaryBrand: state.brand });
+        form.reset({ brand: state.brand });
       }
     };
 
@@ -88,7 +88,7 @@ export const ListingBrandForm = () => {
             {BRANDS.map((brand) => (
               <Controller
                 key={brand}
-                name="primaryBrand"
+                name="brand"
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field
