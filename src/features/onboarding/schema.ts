@@ -1,9 +1,11 @@
 import { z } from "zod";
 
 /*
-  Note: We use the schema sensitive data such as password in here using store. This is no secure and 
-  should not be used as production. Ensure this is properly encrypted to avoid security 
-  vulnerabilites by hashing against database 
+  Security: Never persist `password`/`repeatPassword` in client-side storage (including persisted Zustand state).
+  Keep password fields in ephemeral in-memory form state only, submit over HTTPS, and hash on the server
+  using a password hashing algorithm (Argon2id/bcrypt/scrypt) with per-password salt.
+
+  In this example we store passwords for debugging this example.
 */
 
 // Base schema without password matching validation
