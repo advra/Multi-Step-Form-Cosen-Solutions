@@ -15,4 +15,7 @@ First, run the development server:
 bun dev
 ```
 
-Navigate to: http://localhost:3000/onboarding/name
+Navigate to either of the following
+
+http://localhost:3000/onboarding/name
+http://localhost:3000/listing/category
