@@ -2,7 +2,7 @@ import { ListingBrandForm } from "@/features/listing/components/listing-brand-fo
 
 export default function ListingBrandPage() {
   return (
-    <div className="mt-8 mx-auto min-w-3xl">
+    <div className="mt-8 mx-auto w-full max-w-3xl px-4">
       <ListingBrandForm />
     </div>
   );
