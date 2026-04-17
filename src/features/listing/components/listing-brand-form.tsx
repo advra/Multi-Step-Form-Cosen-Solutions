@@ -4,11 +4,11 @@ import { z } from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 import {
   Field,
   FieldContent,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import { brandSelectionSchema } from "../schema";
 import { BRANDS, BRAND_DISPLAY_NAMES } from "@/features/listing.type";
 import { useListingStore } from "@/app/listing/store";
-import { useEffect } from "react";
 
 const brandSchema = brandSelectionSchema;
 type BrandSchema = z.infer<typeof brandSchema>;
@@ -132,7 +131,11 @@ export const ListingBrandForm = () => {
             type="button"
             variant="outline"
             className="ml-auto"
-            onClick={() => router.push("/listing/category")}
+            onClick={() => {
+              const formValues = form.getValues();
+              setData(formValues);
+              router.push("/listing/category")
+            }}
           >
             Back
           </Button>

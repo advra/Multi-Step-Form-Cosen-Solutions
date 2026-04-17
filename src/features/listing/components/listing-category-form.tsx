@@ -35,7 +35,18 @@ export const ListingCategoryForm = () => {
   });
 
   const onSubmit = (data: CategorySchema) => {
-    setData(data);
+    const currentState = useListingStore.getState() as any;
+    if(currentState.category === data.category) {
+       setData(data);
+    } else {
+      // Always clear brand and product-related fields when category changes
+      setData({
+        ...data,
+        primaryBrand: undefined,
+        productType: undefined,
+        sealedProductType: undefined,
+      });
+    }
     router.push("/listing/brand");
   };
 

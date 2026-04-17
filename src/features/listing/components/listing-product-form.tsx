@@ -1,10 +1,10 @@
 "use client";
 
 import { z } from "zod";
+import { useEffect, useMemo, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo } from "react";
 
 import {
   Field,
@@ -111,7 +111,11 @@ export const ListingProductForm = () => {
   }, [form]);
 
   const onSubmit = (data: ProductSchema) => {
-    setData(data);
+    setData(
+      data.productType === "sealed_product"
+        ? data
+        : { ...data, sealedProductType: undefined },
+    );
     router.push("/");
   };
 
@@ -228,7 +232,11 @@ export const ListingProductForm = () => {
             type="button"
             variant="outline"
             className="ml-auto"
-            onClick={() => router.push("/listing/brand")}
+            onClick={() => {
+              const formValues = form.getValues();
+              setData(formValues);
+              router.push("/listing/brand")}
+            }
           >
             Back
           </Button>
